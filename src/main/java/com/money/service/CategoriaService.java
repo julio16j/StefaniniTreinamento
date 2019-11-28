@@ -22,7 +22,7 @@ public class CategoriaService {
 	}
 	
 	public  Categoria cadastrar(Categoria categoria) {
-		return this.categoriaRepository.save(categoria);
+			return this.categoriaRepository.save(categoria);
 	}
 	
 	public ResponseEntity<Categoria> findById(Long id) {
@@ -41,11 +41,11 @@ public class CategoriaService {
 		
 	}
 	
-	public ResponseEntity<Categoria> deleteById (Long id) {
+	public ResponseEntity<Void> deleteById (Long id) {
 		Optional<Categoria> categoria = this.categoriaRepository.findById(id);
 		if(categoria.isPresent()) {
 			this.categoriaRepository.deleteById(id);
-			return ResponseEntity.ok(null);
+			return ResponseEntity.noContent().build();
 		}
 		else return ResponseEntity.notFound().build();
 	}

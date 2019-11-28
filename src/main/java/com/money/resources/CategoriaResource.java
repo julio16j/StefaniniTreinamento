@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.money.Exceptions.IdInvalidoException;
+import com.money.exceptionhandler.CadastroInvalidoException;
 import com.money.model.Categoria;
 import com.money.service.CategoriaService;
 
@@ -35,12 +35,12 @@ public class CategoriaResource {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Categoria> atualizar(@RequestBody Categoria categoria,  @PathVariable Long id) throws IdInvalidoException{
+	public ResponseEntity<Categoria> atualizar(@RequestBody Categoria categoria,  @PathVariable Long id) {
 		return categoriaService.atualizar(categoria, id);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Categoria> deleteById(@PathVariable Long id){
+	public ResponseEntity<Void> deleteById(@PathVariable Long id){
 		return categoriaService.deleteById(id);
 	}
 	@DeleteMapping
@@ -49,7 +49,7 @@ public class CategoriaResource {
 		
 	}
 	@PostMapping
-	public ResponseEntity<Categoria> cadastrar(@RequestBody Categoria categoria) {
+	public ResponseEntity<Categoria> cadastrar(@RequestBody Categoria categoria) throws CadastroInvalidoException {
 		return  ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.cadastrar(categoria));
 	}
 	
