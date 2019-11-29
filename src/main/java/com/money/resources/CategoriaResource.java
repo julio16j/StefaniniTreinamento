@@ -31,22 +31,23 @@ public class CategoriaResource {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Categoria> findById(@PathVariable Long id) {
-	 	return this.categoriaService.findById(id);
+	 	return ResponseEntity.ok( this.categoriaService.findById(id));
 	}
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Categoria> atualizar(@RequestBody Categoria categoria,  @PathVariable Long id) {
-		return categoriaService.atualizar(categoria, id);
+		return ResponseEntity.ok(categoriaService.atualizar(categoria, id));
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable Long id){
-		return categoriaService.deleteById(id);
+		categoriaService.deleteById(id);
+		return ResponseEntity.noContent().build();
 	}
 	@DeleteMapping
 	public ResponseEntity<Categoria> delete(@RequestBody Categoria categoria){
-		return categoriaService.delete(categoria);
-		
+		categoriaService.delete(categoria);
+		return ResponseEntity.noContent().build();
 	}
 	@PostMapping
 	public ResponseEntity<Categoria> cadastrar(@RequestBody Categoria categoria) throws CadastroInvalidoException {

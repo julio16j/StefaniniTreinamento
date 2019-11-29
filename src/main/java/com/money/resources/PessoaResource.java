@@ -43,11 +43,13 @@ public class PessoaResource {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable Long id){
-		return pessoaService.deleteById(id);
+		pessoaService.deleteById(id);
+		return ResponseEntity.noContent().build();
 	}
 	@DeleteMapping
 	public ResponseEntity<Pessoa> delete(@RequestBody Pessoa pessoa){
-		return pessoaService.delete(pessoa);
+		pessoaService.delete(pessoa);
+		return ResponseEntity.noContent().build();
 		
 	}
 	@PostMapping

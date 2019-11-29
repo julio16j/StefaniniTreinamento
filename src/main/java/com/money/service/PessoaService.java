@@ -1,12 +1,9 @@
 package com.money.service;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 import com.money.model.Pessoa;
 import com.money.repository.PessoaRepository;
@@ -34,25 +31,16 @@ public class PessoaService {
 		Pessoa resposta = this.pessoaRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(1));
 	 	pessoa.setCodigo(resposta.getCodigo());
 	 	return this.pessoaRepository.save(pessoa);
-	 	
-		
 	}
 	
-	public ResponseEntity<Void> deleteById (Long id) {
-		Optional<Pessoa> pessoa = this.pessoaRepository.findById(id);
-		if(pessoa.isPresent()) {
-			this.pessoaRepository.deleteById(id);
-			return ResponseEntity.noContent().build();
-		}
-		else return ResponseEntity.notFound().build();
+	public void deleteById (Long id) {
+		this.pessoaRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(1));
+		this.pessoaRepository.deleteById(id);
 	}
 
-	public ResponseEntity<Pessoa> delete(Pessoa pessoa) {
-		if(this.pessoaRepository.findById(pessoa.getCodigo()).isPresent()) {
-			this.pessoaRepository.delete(pessoa);
-			return ResponseEntity.ok(null);
-		}
-		else return ResponseEntity.notFound().build();
+	public void delete(Pessoa pessoa) {
+		Pessoa resposta = this.pessoaRepository.findById(pessoa.getCodigo()).orElseThrow(() -> new EmptyResultDataAccessException(1));
+		this.pessoaRepository.delete(resposta);
 		
 	}
 }

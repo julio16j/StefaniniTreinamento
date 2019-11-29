@@ -1,11 +1,9 @@
 package com.money.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.money.model.Categoria;
@@ -25,37 +23,25 @@ public class CategoriaService {
 			return this.categoriaRepository.save(categoria);
 	}
 	
-	public ResponseEntity<Categoria> findById(Long id) {
-		Optional<Categoria> resposta = this.categoriaRepository.findById(id);
-	 	if(resposta.isPresent()) return ResponseEntity.status(HttpStatus.OK).body(resposta.get());
-	 	else return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	public Categoria findById(Long id) {
+		return this.categoriaRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(1));
 	}
 	
-	public ResponseEntity<Categoria> atualizar(Categoria categoria, Long id){
-		Optional<Categoria> resposta = this.categoriaRepository.findById(id);
-	 	if(resposta.isPresent()) {
-	 		categoria.setCodigo(resposta.get().getCodigo());
-	 		return ResponseEntity.status(HttpStatus.OK).body(this.categoriaRepository.save(categoria));
-	 	}
-	 	else return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	public Categoria atualizar(Categoria categoria, Long id){
+		Categoria resposta = this.categoriaRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(1));
+	 	categoria.setCodigo(resposta.getCodigo());
+	 	return this.categoriaRepository.save(categoria);
 		
 	}
 	
-	public ResponseEntity<Void> deleteById (Long id) {
-		Optional<Categoria> categoria = this.categoriaRepository.findById(id);
-		if(categoria.isPresent()) {
-			this.categoriaRepository.deleteById(id);
-			return ResponseEntity.noContent().build();
-		}
-		else return ResponseEntity.notFound().build();
+	public void deleteById (Long id) {
+		this.categoriaRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(1));
+		this.categoriaRepository.deleteById(id);
 	}
 
-	public ResponseEntity<Categoria> delete(Categoria categoria) {
-		if(this.categoriaRepository.findById(categoria.getCodigo()).isPresent()) {
-			this.categoriaRepository.delete(categoria);
-			return ResponseEntity.ok(null);
-		}
-		else return ResponseEntity.notFound().build();
+	public void delete(Categoria categoria) {
+		this.categoriaRepository.findById(categoria.getCodigo()).orElseThrow(() -> new EmptyResultDataAccessException(1));
+		this.categoriaRepository.delete(categoria);
 		
 	}
 
